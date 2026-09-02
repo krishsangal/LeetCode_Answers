@@ -1,0 +1,95 @@
+question no 1603
+  class ParkingSystem {
+
+    int big, medium, small;
+
+    public ParkingSystem(int big, int medium, int small) {
+        this.big = big;
+        this.medium = medium;
+        this.small = small;
+    }
+
+    public boolean addCar(int carType) {
+        if (carType == 1 && big > 0) {
+            big--;
+            return true;
+        }
+
+        if (carType == 2 && medium > 0) {
+            medium--;
+            return true;
+        }
+
+        if (carType == 3 && small > 0) {
+            small--;
+            return true;
+        }
+
+        return false;
+    }
+}
+question no 353
+  class SnakeGame {
+
+    int width, height;
+    int score = 0;
+
+    Deque<int[]> snake = new LinkedList<>();
+    Set<String> occupied = new HashSet<>();
+
+    int[][] food;
+    int foodIndex = 0;
+
+    public SnakeGame(int width, int height, int[][] food) {
+        this.width = width;
+        this.height = height;
+        this.food = food;
+
+        snake.addFirst(new int[]{0, 0});
+        occupied.add("0,0");
+    }
+
+    public int move(String direction) {
+
+        int[] head = snake.peekFirst();
+
+        int r = head[0];
+        int c = head[1];
+
+        if (direction.equals("U")) r--;
+        if (direction.equals("D")) r++;
+        if (direction.equals("L")) c--;
+        if (direction.equals("R")) c++;
+
+        if (r < 0 || r >= height || c < 0 || c >= width)
+            return -1;
+
+        int[] tail = snake.peekLast();
+
+        // Tail can move away, so remove it first
+        occupied.remove(tail[0] + "," + tail[1]);
+
+        boolean eating =
+            foodIndex < food.length &&
+            food[foodIndex][0] == r &&
+            food[foodIndex][1] == c;
+
+        if (!eating)
+            snake.pollLast();
+        else {
+            score++;
+            foodIndex++;
+            occupied.add(tail[0] + "," + tail[1]);
+        }
+
+        String pos = r + "," + c;
+
+        if (occupied.contains(pos))
+            return -1;
+
+        snake.addFirst(new int[]{r, c});
+        occupied.add(pos);
+
+        return score;
+    }
+}

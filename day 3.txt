@@ -1,0 +1,192 @@
+question no 78
+  class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        backtrack(0, nums, new ArrayList<>(), ans);
+        return ans;
+    }
+
+    void backtrack(int index, int[] nums,
+                   List<Integer> curr,
+                   List<List<Integer>> ans) {
+
+        ans.add(new ArrayList<>(curr));
+
+        for (int i = index; i < nums.length; i++) {
+            curr.add(nums[i]);
+
+            backtrack(i + 1, nums, curr, ans);
+
+            curr.remove(curr.size() - 1);
+        }
+    }
+}
+question no 46
+  class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+
+        backtrack(nums, used, new ArrayList<>(), ans);
+
+        return ans;
+    }
+
+    void backtrack(int[] nums, boolean[] used,
+                   List<Integer> curr,
+                   List<List<Integer>> ans) {
+
+        if (curr.size() == nums.length) {
+            ans.add(new ArrayList<>(curr));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) continue;
+
+            used[i] = true;
+            curr.add(nums[i]);
+
+            backtrack(nums, used, curr, ans);
+
+            curr.remove(curr.size() - 1);
+            used[i] = false;
+        }
+    }
+}
+question no 22
+  class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new ArrayList<>();
+        backtrack("", 0, 0, n, ans);
+        return ans;
+    }
+
+    void backtrack(String s, int open, int close,
+                   int n, List<String> ans) {
+
+        if (s.length() == 2 * n) {
+            ans.add(s);
+            return;
+        }
+
+        if (open < n)
+            backtrack(s + "(", open + 1, close, n, ans);
+
+        if (close < open)
+            backtrack(s + ")", open, close + 1, n, ans);
+    }
+}
+question no 39
+  class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        backtrack(candidates, target, 0,
+                  new ArrayList<>(), ans);
+
+        return ans;
+    }
+
+    void backtrack(int[] nums, int target, int start,
+                   List<Integer> curr,
+                   List<List<Integer>> ans) {
+
+        if (target == 0) {
+            ans.add(new ArrayList<>(curr));
+            return;
+        }
+
+        if (target < 0)
+            return;
+
+        for (int i = start; i < nums.length; i++) {
+            curr.add(nums[i]);
+
+            // i, not i+1, because same number can be reused
+            backtrack(nums, target - nums[i], i, curr, ans);
+
+            curr.remove(curr.size() - 1);
+        }
+    }
+}
+question no 17
+  class Solution {
+    String[] map = {
+        "", "", "abc", "def", "ghi",
+        "jkl", "mno", "pqrs", "tuv", "wxyz"
+    };
+
+    public List<String> letterCombinations(String digits) {
+        List<String> ans = new ArrayList<>();
+
+        if (digits.length() == 0)
+            return ans;
+
+        backtrack(digits, 0, new StringBuilder(), ans);
+
+        return ans;
+    }
+
+    void backtrack(String digits, int index,
+                   StringBuilder curr,
+                   List<String> ans) {
+
+        if (index == digits.length()) {
+            ans.add(curr.toString());
+            return;
+        }
+
+        String letters = map[digits.charAt(index) - '0'];
+
+        for (char c : letters.toCharArray()) {
+            curr.append(c);
+
+            backtrack(digits, index + 1, curr, ans);
+
+            curr.deleteCharAt(curr.length() - 1);
+        }
+    }
+}
+question no 79
+  class Solution {
+    public boolean exist(char[][] board, String word) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+
+                if (dfs(board, word, i, j, 0))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    boolean dfs(char[][] board, String word,
+                int r, int c, int index) {
+
+        if (index == word.length())
+            return true;
+
+        if (r < 0 || c < 0 ||
+            r >= board.length || c >= board[0].length ||
+            board[r][c] != word.charAt(index))
+            return false;
+
+        char temp = board[r][c];
+        board[r][c] = '#';
+
+        boolean found =
+            dfs(board, word, r + 1, c, index + 1) ||
+            dfs(board, word, r - 1, c, index + 1) ||
+            dfs(board, word, r, c + 1, index + 1) ||
+            dfs(board, word, r, c - 1, index + 1);
+
+        board[r][c] = temp;
+
+        return found;
+    }
+}
+
+  
+  

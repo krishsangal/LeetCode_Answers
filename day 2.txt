@@ -1,0 +1,143 @@
+question no 238
+  class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+
+        int prefix = 1;
+
+        for (int i = 0; i < n; i++) {
+            ans[i] = prefix;
+            prefix *= nums[i];
+        }
+
+        int suffix = 1;
+
+        for (int i = n - 1; i >= 0; i--) {
+            ans[i] *= suffix;
+            suffix *= nums[i];
+        }
+
+        return ans;
+    }
+}
+question no 55
+  class Solution {
+    public boolean canJump(int[] nums) {
+        int reach = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i > reach)
+                return false;
+
+            reach = Math.max(reach, i + nums[i]);
+        }
+
+        return true;
+    }
+}
+question no 189
+  class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+
+        reverse(nums, 0, n - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, n - 1);
+    }
+
+    private void reverse(int[] nums, int l, int r) {
+        while (l < r) {
+            int temp = nums[l];
+            nums[l] = nums[r];
+            nums[r] = temp;
+            l++;
+            r--;
+        }
+    }
+}
+question no 56
+  class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        List<int[]> list = new ArrayList<>();
+
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] <= end) {
+                end = Math.max(end, intervals[i][1]);
+            } else {
+                list.add(new int[]{start, end});
+
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }
+        }
+
+        list.add(new int[]{start, end});
+
+        return list.toArray(new int[list.size()][]);
+    }
+}
+question no 134
+  class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int total = 0;
+        int tank = 0;
+        int start = 0;
+
+        for (int i = 0; i < gas.length; i++) {
+            int diff = gas[i] - cost[i];
+
+            total += diff;
+            tank += diff;
+
+            if (tank < 0) {
+                start = i + 1;
+                tank = 0;
+            }
+        }
+
+        return total >= 0 ? start : -1;
+    }
+}
+question no 54
+  class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> ans = new ArrayList<>();
+
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int left = 0;
+        int right = matrix[0].length - 1;
+
+        while (top <= bottom && left <= right) {
+
+            for (int j = left; j <= right; j++)
+                ans.add(matrix[top][j]);
+            top++;
+
+            for (int i = top; i <= bottom; i++)
+                ans.add(matrix[i][right]);
+            right--;
+
+            if (top <= bottom) {
+                for (int j = right; j >= left; j--)
+                    ans.add(matrix[bottom][j]);
+                bottom--;
+            }
+
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--)
+                    ans.add(matrix[i][left]);
+                left++;
+            }
+        }
+
+        return ans;
+    }
+}

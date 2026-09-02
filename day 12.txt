@@ -1,0 +1,165 @@
+question no 561
+  class Solution {
+    public int arrayPairSum(int[] nums) {
+
+        Arrays.sort(nums);
+
+        int ans = 0;
+
+        for (int i = 0; i < nums.length; i += 2)
+            ans += nums[i];
+
+        return ans;
+    }
+}
+question no 560
+  class Solution {
+    public int subarraySum(int[] nums, int k) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        map.put(0, 1);
+
+        int sum = 0;
+        int count = 0;
+
+        for (int x : nums) {
+
+            sum += x;
+
+            if (map.containsKey(sum - k))
+                count += map.get(sum - k);
+
+            map.put(sum,
+                    map.getOrDefault(sum, 0) + 1);
+        }
+
+        return count;
+    }
+}
+question no 167
+  class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+
+        int l = 0;
+        int r = numbers.length - 1;
+
+        while (l < r) {
+
+            int sum = numbers[l] + numbers[r];
+
+            if (sum == target)
+                return new int[]{l + 1, r + 1};
+
+            if (sum < target)
+                l++;
+            else
+                r--;
+        }
+
+        return new int[]{-1, -1};
+    }
+}
+question no 581
+  class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+
+        int n = nums.length;
+
+        int left = -1;
+        int right = -1;
+
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 0; i < n; i++) {
+
+            if (nums[i] < max)
+                right = i;
+            else
+                max = nums[i];
+        }
+
+        int min = Integer.MAX_VALUE;
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            if (nums[i] > min)
+                left = i;
+            else
+                min = nums[i];
+        }
+
+        if (left == -1)
+            return 0;
+
+        return right - left + 1;
+    }
+}
+question no 986
+  class Solution {
+    public int[][] intervalIntersection(
+            int[][] firstList,
+            int[][] secondList) {
+
+        List<int[]> ans = new ArrayList<>();
+
+        int i = 0;
+        int j = 0;
+
+        while (i < firstList.length &&
+               j < secondList.length) {
+
+            int start = Math.max(
+                firstList[i][0],
+                secondList[j][0]
+            );
+
+            int end = Math.min(
+                firstList[i][1],
+                secondList[j][1]
+            );
+
+            if (start <= end)
+                ans.add(new int[]{start, end});
+
+            if (firstList[i][1] <
+                secondList[j][1]) {
+
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return ans.toArray(new int[ans.size()][]);
+    }
+}
+question no 209
+  class Solution {
+    public int minSubArrayLen(
+            int target, int[] nums) {
+
+        int left = 0;
+        int sum = 0;
+        int ans = Integer.MAX_VALUE;
+
+        for (int right = 0;
+             right < nums.length;
+             right++) {
+
+            sum += nums[right];
+
+            while (sum >= target) {
+
+                ans = Math.min(
+                    ans,
+                    right - left + 1
+                );
+
+                sum -= nums[left++];
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? 0 : ans;
+    }
+}

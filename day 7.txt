@@ -1,0 +1,79 @@
+question no 48
+  class Solution {
+    public void rotate(int[][] matrix) {
+
+        int n = matrix.length;
+
+        // transpose
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+
+        // reverse rows
+        for (int i = 0; i < n; i++) {
+            int l = 0, r = n - 1;
+
+            while (l < r) {
+                int temp = matrix[i][l];
+                matrix[i][l] = matrix[i][r];
+                matrix[i][r] = temp;
+
+                l++;
+                r--;
+            }
+        }
+    }
+}
+question no 1260 
+  class Solution {
+    public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int total = m * n;
+        k %= total;
+
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for (int i = 0; i < m; i++)
+            ans.add(new ArrayList<>());
+
+        for (int i = 0; i < total; i++) {
+
+            int newIndex = (i + k) % total;
+
+            int r = newIndex / n;
+            int c = newIndex % n;
+
+            ans.get(r).add(grid[i / n][i % n]);
+        }
+
+        return ans;
+    }
+}
+question no 2022
+  class Solution {
+    public int[][] construct2DArray(
+            int[] original, int m, int n) {
+
+        if (original.length != m * n)
+            return new int[0][0];
+
+        int[][] ans = new int[m][n];
+
+        for (int i = 0; i < original.length; i++) {
+            ans[i / n][i % n] = original[i];
+        }
+
+        return ans;
+    }
+}
+
+  
+  

@@ -1,0 +1,234 @@
+question no 102 
+  class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+        List<List<Integer>> ans = new ArrayList<>();
+
+        if (root == null)
+            return ans;
+
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+
+            int size = q.size();
+
+            List<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+
+                TreeNode node = q.poll();
+
+                level.add(node.val);
+
+                if (node.left != null)
+                    q.offer(node.left);
+
+                if (node.right != null)
+                    q.offer(node.right);
+            }
+
+            ans.add(level);
+        }
+
+        return ans;
+    }
+}
+question no 1194
+  class Solution {
+
+    public int minCost(
+            int maxTime,
+            int[][] edges,
+            int[] passingFees) {
+
+        int n = passingFees.length;
+
+        List<int[]>[] graph = new ArrayList[n];
+
+        for (int i = 0; i < n; i++)
+            graph[i] = new ArrayList<>();
+
+        for (int[] e : edges) {
+            int u = e[0];
+            int v = e[1];
+            int time = e[2];
+
+            graph[u].add(new int[]{v, time});
+            graph[v].add(new int[]{u, time});
+        }
+
+        int[][] dist = new int[n][maxTime + 1];
+
+        for (int[] row : dist)
+            Arrays.fill(row, Integer.MAX_VALUE);
+
+        PriorityQueue<int[]> pq =
+            new PriorityQueue<>(
+                (a, b) -> a[0] - b[0]
+            );
+
+        dist[0][0] = passingFees[0];
+
+        // {cost, node, time}
+        pq.offer(new int[]{passingFees[0], 0, 0});
+
+        while (!pq.isEmpty()) {
+
+            int[] curr = pq.poll();
+
+            int cost = curr[0];
+            int node = curr[1];
+            int time = curr[2];
+
+            if (node == n - 1)
+                return cost;
+
+            if (cost != dist[node][time])
+                continue;
+
+            for (int[] next : graph[node]) {
+
+                int newNode = next[0];
+                int newTime = time + next[1];
+
+                if (newTime > maxTime)
+                    continue;
+
+                int newCost =
+                    cost + passingFees[newNode];
+
+                if (newCost < dist[newNode][newTime]) {
+
+                    dist[newNode][newTime] = newCost;
+
+                    pq.offer(new int[]{
+                        newCost,
+                        newNode,
+                        newTime
+                    });
+                }
+            }
+        }
+
+        return -1;
+    }
+}
+question no 543
+  class Solution {
+
+    int diameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        height(root);
+        return diameter;
+    }
+
+    int height(TreeNode root) {
+
+        if (root == null)
+            return 0;
+
+        int left = height(root.left);
+        int right = height(root.right);
+
+        diameter = Math.max(diameter, left + right);
+
+        return Math.max(left, right) + 1;
+    }
+}
+question no 98
+  class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return check(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    boolean check(TreeNode root, long min, long max) {
+
+        if (root == null)
+            return true;
+
+        if (root.val <= min || root.val >= max)
+            return false;
+
+        return check(root.left, min, root.val) &&
+               check(root.right, root.val, max);
+    }
+}
+question no 430
+  class Solution {
+    public Node flatten(Node head) {
+
+        if (head == null)
+            return null;
+
+        flattenList(head);
+
+        return head;
+    }
+
+    Node flattenList(Node head) {
+
+        Node curr = head;
+        Node last = null;
+
+        while (curr != null) {
+
+            Node next = curr.next;
+
+            if (curr.child != null) {
+
+                Node child = curr.child;
+
+                Node childTail = flattenList(child);
+
+                curr.next = child;
+                child.prev = curr;
+
+                curr.child = null;
+
+                if (next != null) {
+                    childTail.next = next;
+                    next.prev = childTail;
+                }
+
+                last = childTail;
+
+            } else {
+                last = curr;
+            }
+
+            curr = next;
+        }
+
+        return last;
+    }
+}
+questoin no 235
+  class Solution {
+    public TreeNode lowestCommonAncestor(
+            TreeNode root,
+            TreeNode p,
+            TreeNode q) {
+
+        while (root != null) {
+
+            if (p.val < root.val &&
+                q.val < root.val) {
+
+                root = root.left;
+
+            } else if (p.val > root.val &&
+                       q.val > root.val) {
+
+                root = root.right;
+
+            } else {
+                return root;
+            }
+        }
+
+        return null;
+    }
+}

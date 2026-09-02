@@ -1,0 +1,126 @@
+question no 19 
+  class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+
+        for (int i = 0; i < n; i++)
+            fast = fast.next;
+
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        slow.next = slow.next.next;
+
+        return dummy.next;
+    }
+}
+question no 2
+class Solution {
+    public ListNode addTwoNumbers(
+            ListNode l1, ListNode l2) {
+
+        ListNode dummy = new ListNode(0);
+        ListNode curr = dummy;
+
+        int carry = 0;
+
+        while (l1 != null || l2 != null || carry != 0) {
+
+            int sum = carry;
+
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+
+            carry = sum / 10;
+
+            curr.next = new ListNode(sum % 10);
+            curr = curr.next;
+        }
+
+        return dummy.next;
+    }
+}
+
+question no 141
+  class Solution {
+    public boolean hasCycle(ListNode head) {
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+}
+question no 344
+  class Solution {
+    public void reverseString(char[] s) {
+
+        int l = 0;
+        int r = s.length - 1;
+
+        while (l < r) {
+
+            char temp = s[l];
+            s[l] = s[r];
+            s[r] = temp;
+
+            l++;
+            r--;
+        }
+    }
+}
+question no 1143
+  class Solution {
+    public int longestCommonSubsequence(
+            String text1, String text2) {
+
+        int m = text1.length();
+        int n = text2.length();
+
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+
+                if (text1.charAt(i - 1) ==
+                    text2.charAt(j - 1)) {
+
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+
+                } else {
+
+                    dp[i][j] =
+                        Math.max(dp[i - 1][j],
+                                 dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+}
+
+  
